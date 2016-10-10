@@ -1,4 +1,25 @@
+var HabitList = React.createClass({
+  render: function() {
+    return (
+      <div>
+        This is where the Habit List goes
+        <Habit />
+      </div>
+    );
+  }
+});
+
+var Habit = React.createClass({
+  render: function() {
+    return (
+      <div>
+        This is a sample Habit
+      </div>
+    )
+  }
+})
+
 ReactDOM.render(
-      <h1>Hello, world!</h1>,
-      document.getElementById('example')
-      );
+  <HabitList />,
+  document.getElementById('main')
+);
