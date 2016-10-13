@@ -13,45 +13,40 @@ var data = [
   }
 ]
 
-var HabitList = React.createClass({
+var HabitForm = React.createClass({
   getInitialState: function() {
-    return {habits: data};
+    return {id: 0, name: '', frequency: '', current: "true"}
   },
-  addBug: function(habit) {
-    console.log("Adding bug");
-    var newHabits = this.state.habits.slice();
-    newHabits.push(habit);
-    this.setState({habits: newHabits})
-  },
-  testAddBug: function() {
-    this.addBug({
-      id: 3,
-      name: "Swiffer",
-      frequency: 7,
-      current: "false"
-    });
+  handleSubmit: function(event) {
+    event.preventDefault();
+    var form = document.forms.addHabit;
+    var name = form.habitName.value.trim();
+    var frequency = form.habitName.value.trim();
+    if (!name || !frequency) {
+      return;
+    }
+    this.props.onHabitSubmit({id: 0, name: name, frequency: frequency, current: "true"})
+    form.habitName.value = "";
+    form.habitName.value = "";
   },
   render: function() {
-    var dataMap = this.state.habits.map(function(dataList) {
-      return (
-        <Habit id={dataList.id}
-               name={dataList.name} 
-               frequency={dataList.frequency}
-               current={dataList.current} />
-      )
-    });
     return (
-      <div>
-        <table>
-          <tbody>
-            {dataMap}
-          </tbody>
-        </table>
-        <button onClick={this.testAddBug}>Add Bug</button>
-      </div>
+      <form name="addHabit" onSubmit={this.handleSubmit}>
+        <input
+          name="habitName"
+          type="text"
+          placeholder="Habit name"
+        />
+        <input
+          name="frequency"
+          type="text"
+          placeholder="Frequency"
+        />
+        <input type="submit" />
+      </form>
     );
   }
-});
+})
 
 var Habit = React.createClass({
   render: function() {
@@ -66,21 +61,39 @@ var Habit = React.createClass({
   }
 })
 
-// class AddBugButton extends React.Component {
-//   constructor() {
-//     super();
-//   }
-//   addBug() {
-//     console.log("");
-//   }
-//   render() {
-//     return(
-//       <div onClick={this.test}>
-//         Add Bug
-//       </div>
-//     );
-//   }
-// }
+var HabitList = React.createClass({
+  getInitialState: function() {
+    return {habits: data};
+  },
+  addHabit: function(habit) {
+    var newHabits = this.state.habits.slice();
+    var habitId = this.state.habits.length + 1;
+    habit.id = habitId;
+    newHabits.push(habit);
+    this.setState({habits: newHabits});
+    console.log(this.state);
+  },
+  render: function() {
+    var dataMap = this.state.habits.map(function(dataList) {
+      return (
+        <Habit key={dataList.id}
+               name={dataList.name} 
+               frequency={dataList.frequency}
+               current={dataList.current} />
+      )
+    });
+    return (
+      <div>
+        <table>
+          <tbody>
+            {dataMap}
+          </tbody>
+        </table>
+        <HabitForm onHabitSubmit={this.addHabit}/>
+      </div>
+    );
+  }
+});
 
 ReactDOM.render(
   <HabitList data={data} />,
