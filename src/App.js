@@ -1,18 +1,3 @@
-var data = [
-  {
-    id: 1,
-    name: "Make the bed", 
-    frequency: 1, 
-    current: "true"
-  },
-  {
-    id: 2,
-    name: "Laundry",
-    frequency: 7,
-    current: "false"
-  }
-]
-
 var HabitForm = React.createClass({
   getInitialState: function() {
     return {id: 0, name: '', frequency: '', current: "true"}
