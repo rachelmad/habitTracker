@@ -6,7 +6,7 @@ var HabitForm = React.createClass({
     event.preventDefault();
     var form = document.forms.addHabit;
     var name = form.habitName.value.trim();
-    var frequency = form.habitName.value.trim();
+    var frequency = form.frequency.value.trim();
     if (!name || !frequency) {
       return;
     }
@@ -48,15 +48,26 @@ var Habit = React.createClass({
 
 var HabitList = React.createClass({
   getInitialState: function() {
-    return {habits: data};
+    return {habits: []};
+  },
+  componentDidMount: function() {
+    $.ajax('/api/habits').done(function(data) {
+      this.setState({habits: data});
+    }.bind(this));
   },
   addHabit: function(habit) {
-    var newHabits = this.state.habits.slice();
-    var habitId = this.state.habits.length + 1;
-    habit.id = habitId;
-    newHabits.push(habit);
-    this.setState({habits: newHabits});
-    console.log(this.state);
+    $.ajax({
+      url: "/api/habits",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(habit),
+      success: function(data) {
+        this.setState({habits: data});
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error("Error adding habit", err.toString());
+      }.bind(this)
+    })
   },
   render: function() {
     var dataMap = this.state.habits.map(function(dataList) {
@@ -81,6 +92,6 @@ var HabitList = React.createClass({
 });
 
 ReactDOM.render(
-  <HabitList data={data} />,
+  <HabitList />,
   document.getElementById('main')
 );

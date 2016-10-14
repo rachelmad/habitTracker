@@ -40,7 +40,7 @@ app.post('/api/habits', function (req, res) {
 	req.body.id = id;
 	req.body.current = "true";
 	data.push(req.body);
-  	res.status(200).json(req.body);
+  	res.status(200).json(data);
 });
 
 app.listen(3000, function () {
