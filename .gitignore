@@ -8,6 +8,7 @@ coverage
 
 # production
 build
+static/App.js
 
 # misc
 .DS_Store
