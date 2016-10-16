@@ -1,24 +1,22 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var mongo;
+
+var url = 'mongodb://localhost:27017/habits';
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  mongo = db;
+
+  app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+  });
+});
 
 app.use(express.static('static'));
 app.use(bodyParser.json());
-
-var data = [
-  {
-    id: 1,
-    name: "Make the bed", 
-    frequency: 1, 
-    current: "true"
-  },
-  {
-    id: 2,
-    name: "Laundry",
-    frequency: 7,
-    current: "false"
-  }
-];
 
 var isValidHabit = function(habit) {
 	console.log(habit);
@@ -27,7 +25,9 @@ var isValidHabit = function(habit) {
 }
 
 app.get('/api/habits', function(req, res){
-	res.status(200).json(data);
+  mongo.collection('habits').find().toArray(function(err, docs) {
+    res.status(200).send(docs);  
+  });
 });
 
 app.post('/api/habits', function (req, res) {
@@ -41,8 +41,4 @@ app.post('/api/habits', function (req, res) {
 	req.body.current = "true";
 	data.push(req.body);
   	res.status(200).json(data);
-});
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
 });

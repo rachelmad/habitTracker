@@ -12,7 +12,7 @@ var HabitForm = React.createClass({
     }
     this.props.onHabitSubmit({id: 0, name: name, frequency: frequency, current: "true"})
     form.habitName.value = "";
-    form.habitName.value = "";
+    form.frequency.value = "";
   },
   render: function() {
     return (
@@ -63,6 +63,7 @@ var HabitList = React.createClass({
       data: JSON.stringify(habit),
       success: function(data) {
         this.setState({habits: data});
+        console.log("New habit added");
       }.bind(this),
       error: function (xhr, status, err) {
         console.error("Error adding habit", err.toString());
