@@ -19,7 +19,6 @@ app.use(express.static('static'));
 app.use(bodyParser.json());
 
 var isValidHabit = function(habit) {
-	console.log(habit);
 	return (habit.name != null && 
 			habit.frequency != null);
 }
@@ -36,9 +35,10 @@ app.post('/api/habits', function (req, res) {
 		return;
 	}
 
-	var id = data.length + 1;
-	req.body.id = id;
-	req.body.current = "true";
-	data.push(req.body);
-  	res.status(200).json(data);
+	mongo.collection('habits').insertOne(req.body, function(err, result) {
+		assert.equal(err, null);
+		mongo.collection('habits').findOne({_id:result.insertedId}, function(err, doc) {
+			res.status(200).json(doc);
+		});
+	})
 });

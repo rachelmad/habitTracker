@@ -10,7 +10,7 @@ var HabitForm = React.createClass({
     if (!name || !frequency) {
       return;
     }
-    this.props.onHabitSubmit({id: 0, name: name, frequency: frequency, current: "true"})
+    this.props.onHabitSubmit({name: name, frequency: frequency, current: "true"})
     form.habitName.value = "";
     form.frequency.value = "";
   },
@@ -37,7 +37,7 @@ var Habit = React.createClass({
   render: function() {
     return (
       <tr>
-        <td>{this.props.id}</td>
+        <td>{this.props._id}</td>
         <td>{this.props.name}</td>
         <td>{this.props.frequency}</td>
         <td>{this.props.current}</td>
@@ -62,7 +62,9 @@ var HabitList = React.createClass({
       contentType: "application/json",
       data: JSON.stringify(habit),
       success: function(data) {
-        this.setState({habits: data});
+        var newHabits = this.state.habits.slice();
+        newHabits.push(data);
+        this.setState({habits: newHabits});
         console.log("New habit added");
       }.bind(this),
       error: function (xhr, status, err) {
@@ -73,7 +75,7 @@ var HabitList = React.createClass({
   render: function() {
     var dataMap = this.state.habits.map(function(dataList) {
       return (
-        <Habit key={dataList.id}
+        <Habit key={dataList._id}
                name={dataList.name} 
                frequency={dataList.frequency}
                current={dataList.current} />
