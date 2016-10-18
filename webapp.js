@@ -24,8 +24,11 @@ var isValidHabit = function(habit) {
 }
 
 app.get('/api/habits', function(req, res){
-	console.log(req.query.frequency);
-  mongo.collection('habits').find({"frequency":{$lt: req.query.frequency}}).toArray(function(err, docs) {
+	var filter = {};
+	if (req.query.frequency) {
+		filter.frequency = {$lt: req.query.frequency};
+	}
+  mongo.collection('habits').find(filter).toArray(function(err, docs) {
     res.status(200).send(docs);  
   });
 });
