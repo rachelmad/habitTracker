@@ -51,7 +51,7 @@ var HabitList = React.createClass({
     return {habits: []};
   },
   componentDidMount: function() {
-    $.ajax('/api/habits').done(function(data) {
+    $.ajax('/api/habits?frequency=7').done(function(data) {
       this.setState({habits: data});
     }.bind(this));
   },
