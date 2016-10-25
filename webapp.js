@@ -34,6 +34,7 @@ app.get('/api/habits', function(req, res){
 });
 
 app.post('/api/habits', function (req, res) {
+  console.log(req.body);
 	if (!isValidHabit(req.body)) {
 		res.status(500).send("Invalid habit");
 		return;
