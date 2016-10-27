@@ -1,6 +1,22 @@
 var HabitList = require('./HabitList');
+var Router = require('react-router').Router;
+var Route = require('react-router').Route;
+var Redirect = require('react-router').Redirect;
+
+var NoMatch = React.createClass({
+  render: function() {
+    return (
+      <h2>No match for the route</h2>
+    );
+  }
+});
 
 ReactDOM.render(
-  <HabitList />,
+  (
+    <Router>
+      <Route path="/habits" component={HabitList} />
+      <Route path="*" component={NoMatch} />
+    </Router>
+  ),
   document.getElementById('main')
 );
