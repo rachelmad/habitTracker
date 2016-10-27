@@ -6,9 +6,13 @@ module.exports = {
     contentBase: "./static"
   },
   entry: "./src/App.js",
+  debug: true,
+  devtool: 'source-map',
   output: {
     path: "./static",
-    filename: "bundle.js"
+    filename: "bundle.js",
+    devtoolLineToLine: true,
+    sourceMapFilename: "./bundle.js.map"
   },
   watch: true,
   module: {
