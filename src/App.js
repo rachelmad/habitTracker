@@ -15,6 +15,7 @@ ReactDOM.render(
   (
     <Router>
       <Route path="/habits" component={HabitList} />
+      <Redirect from="/" to="/habits" />
       <Route path="*" component={NoMatch} />
     </Router>
   ),
