@@ -17,9 +17,7 @@ var HabitList = React.createClass({
     }.bind(this));
   },
   componentDidMount: function() {
-    this.loadData({
-      frequency: 7
-    });
+    this.loadData({});
   },
   addHabit: function(habit) {
     $.ajax({

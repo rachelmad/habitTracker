@@ -1,15 +1,18 @@
 var HabitFilter = React.createClass({
-  handleFilterClick: function() {
-    this.props.onFilterSubmit({
-      frequency: 0
-    });
-  },
   render: function() {
     return (
       <div>
-        <button onClick={this.handleFilterClick}>Click Me!</button>
+        <button onClick={() => { this.handleFilterClick(7) }}>Daily</button>
+        <button onClick={() => { this.handleFilterClick(30) }}>Weekly</button>
+        <button onClick={() => { this.handleFilterClick(100) }}>Monthly</button>
       </div>
     );
+  },
+  handleFilterClick: function(option) {
+    console.log("Here");
+    this.props.onFilterSubmit({
+      frequency: option
+    });
   }
 });
 
