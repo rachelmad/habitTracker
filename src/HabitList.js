@@ -1,14 +1,25 @@
 var HabitForm = require('./HabitForm');
 var Habit = require('./Habit');
+var HabitFilter = require('./HabitFilter');
 
 var HabitList = React.createClass({
   getInitialState: function() {
     return {habits: []};
   },
-  componentDidMount: function() {
-    $.ajax('/api/habits?frequency=7').done(function(data) {
+  loadData: function(filters) {
+    var parameters = "/api/habits?";
+    if (filters.frequency != undefined) {
+      parameters = parameters.concat("frequency=" + filters.frequency);
+    }
+    $.ajax(parameters).done(function(data) {
+      console.log(data);
       this.setState({habits: data});
     }.bind(this));
+  },
+  componentDidMount: function() {
+    this.loadData({
+      frequency: 7
+    });
   },
   addHabit: function(habit) {
     $.ajax({
@@ -38,6 +49,7 @@ var HabitList = React.createClass({
     });
     return (
       <div>
+        <HabitFilter onFilterSubmit={this.loadData}/>
         <table>
           <tbody>
             {dataMap}
