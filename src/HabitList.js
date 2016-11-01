@@ -9,6 +9,13 @@ var HabitList = React.createClass({
   componentDidMount: function() {
     this.loadData({});
   },
+  componentWillReceiveProps: function(nextProps) {
+    if (this.props != nextProps) {
+      this.loadData({
+        frequency: nextProps.location.query.frequency
+      });
+    }
+  },
   addHabit: function(habit) {
     $.ajax({
       url: "/api/habits",
@@ -42,7 +49,6 @@ var HabitList = React.createClass({
       queryString = queryString.concat("frequency=" + filters.frequency);
     }
     this.props.history.push(queryString);
-    this.loadData(filters);
   },
   render: function() {
     var dataMap = this.state.habits.map(function(dataList) {
