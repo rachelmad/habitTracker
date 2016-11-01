@@ -6,16 +6,6 @@ var HabitList = React.createClass({
   getInitialState: function() {
     return {habits: []};
   },
-  loadData: function(filters) {
-    var parameters = "/api/habits?";
-    if (filters.frequency != undefined) {
-      parameters = parameters.concat("frequency=" + filters.frequency);
-    }
-    $.ajax(parameters).done(function(data) {
-      console.log(data);
-      this.setState({habits: data});
-    }.bind(this));
-  },
   componentDidMount: function() {
     this.loadData({});
   },
@@ -36,6 +26,24 @@ var HabitList = React.createClass({
       }.bind(this)
     })
   },
+  loadData: function(filters) {
+    var parameters = "/api/habits?";
+    if (filters.frequency != undefined) {
+      parameters = parameters.concat("frequency=" + filters.frequency);
+    }
+    $.ajax(parameters).done(function(data) {
+      console.log(data);
+      this.setState({habits: data});
+    }.bind(this));
+  },
+  changeFilter: function(filters) {
+    var queryString = "/habits?";
+    if (filters.frequency != undefined) {
+      queryString = queryString.concat("frequency=" + filters.frequency);
+    }
+    this.props.history.push(queryString);
+    this.loadData(filters);
+  },
   render: function() {
     var dataMap = this.state.habits.map(function(dataList) {
       return (
@@ -47,7 +55,7 @@ var HabitList = React.createClass({
     });
     return (
       <div>
-        <HabitFilter onFilterSubmit={this.loadData}/>
+        <HabitFilter onFilterSubmit={this.changeFilter}/>
         <table>
           <tbody>
             {dataMap}
